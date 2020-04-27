@@ -1,0 +1,52 @@
+<html>
+<meta charset="utf-8">
+
+<body>
+    <div>
+        <label>
+            添加订阅者：
+            <input type="text" id="observer">
+        </label>
+        <button onclick="addObserver()">添加</button>
+    </div>
+    <ul style="overflow: hidden;"></ul>
+    <label>
+        改变的状态值：
+        <input type="text" id="state">
+    </label>
+    <div id="content"></div>
+</body>
+<script src="observers.js"></script>
+<script>
+    let dep = new Dep()
+    var el_observer = document.querySelector('#observer')
+    var el_input = document.querySelector('#state')
+    var el_body = document.querySelector('#content')
+    var el_ul = document.querySelector('ul')
+    el_input.addEventListener('blur', function (e) {
+        dep.setState(e.target.value)
+    })
+
+    function addObserver() {
+        el_body.innerHTML = ""
+        new Observer(el_observer.value, dep, message => { addHtml(message) })
+        var el_li = document.createElement('li')
+        el_li.style.float = 'left';
+        el_li.style.listStyleType = 'none'
+        el_li.style.marginLeft = '10px'
+        el_li.innerHTML = el_observer.value
+        el_ul.appendChild(el_li)
+        el_observer.value = ""
+
+    }
+
+    function addHtml(message) {
+        var el_div = document.createElement('div')
+        el_div.innerHTML = message
+        el_body.appendChild(el_div)
+    }
+
+
+</script>
+
+</html>
